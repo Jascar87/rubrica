@@ -1,5 +1,6 @@
 package rubrica;
 
+import java.security.cert.CertPathChecker;
 import java.util.ArrayList;
 /**
  * La classe contiene il campo name con cui viene salvato il contato, il campo eMail dove contiene una eMail del contatto
@@ -42,26 +43,20 @@ public class Contatto {
 	 * Imposta la email del contatto con la stringa fornita.
 	 * 
 	 * @param eMail stringa da inseire nel campo email 
-	 * @return valore booleano per indicare se l'operazione è andata a buon fine
 	 */
-	public boolean setEMail(String eMail){
-		if (eMail != null && eMail.matches(".*@.*\\..*")) {
-			this.eMail = eMail;
-			return true;
-		}
-		return false;
+	public void setEMail(String eMail){
+		if (checkMail(eMail)) this.eMail = eMail;
+		else //exception;
 	}
 	
 	/**
 	 * Aggiunge alla lista dei numeri di telefono del contatto il numero fornito.
 	 *  
 	 * @param telNum è il numero da inserire 
-	 * @return valore booleano per indicare se l'operazione è andata a buon fine
 	 */
-	public boolean addTelNum(String telNum){
-		if (telNum != null && telNum.matches("[0-9]+") && !telNums.contains(telNum))
-			return this.telNums.add(telNum);
-		return false;
+	public void addTelNum(String telNum){
+		if (checkTel(telNum)) this.telNums.add(telNum);
+		else //exception;
 	}
 	
 	/**
@@ -91,5 +86,19 @@ public class Contatto {
 	 */
 	public String toString(){
 		return name + "; " + eMail + "; " + getTelNums();
+	}
+	static boolean checkNome(String nome){
+		if(nome != null && nome.matches("\\w+")) return true;
+		return false;
+	}
+	static boolean checkMail(String mail){
+		if (mail != null && mail.matches(".*@.*\\..*")) return true;
+		return false;
+	}
+	
+	
+	static boolean checkTel(String tel){
+		if (tel != null && tel.matches("[0-9]+") && !tel.contains(tel)) return true;
+		return false;
 	}
 }
